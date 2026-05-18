@@ -1,6 +1,112 @@
 # Diario de trabajo
 
 Este archivo contiene el trabajo de Joaquín para el curso del CEP Introducción a DevOps
+### Tarea 1 — Fork y configuración inicial
+> **Diario:** Escribe qué es un fork y para qué sirve `upstream`. Adjunta la captura 1 y la captura 2.
+
+Un fork es una copia de un repositorio que no me pertenece que hago en mi propia cuenta para trabajar con él. En el caso de esta práctica he partido de un repositorio propiedad de LemonCode y he creado una copia de ese repositorio en mi propia cuenta de Github para poder trabajar libremente con él. 
+
+El repositorio folkeado lo he clonado a mi ordenador en local. Lo hago pinchando en el botón verde “Code” y copiando la ruta url. Desde VS puedo usar la terminal y escribir “git clone [url del proyecto]”.
+
+Abro la terminal y compruebo la versión de node con “node -v”. Luego descargo los paquetes necesarios con “npm install”. Ejecuto el proyecto de ejemplo en mi máquina. Para eso sigo las instrucciones del archivo Readme, arranco la aplicación y compruebo que funciona en el navegador.
+
+Configuración del repositorio. Vamos a revisar la configuración con el comando: “git remote -v”. Se puede configurar el origin y el upstream. En principio sólo está el mio, pero puedo añadir el remote del repositorio original poniendole el nombre "upstream".
+
+Para trabajar tranquilamente y hacer cambios sin modificar la rama principal, creo una rama (branch) llamada "dev". Usamos el comando “git switch -c dev”. Con este comando creamos la rama “dev” si no existe y nos movemos a esa rama. Para publicar la nueva rama a Github, desde la terminal ponemos: “git push -u origin dev”. 
+
+- Captura 1: Terminal con `git remote -v` mostrando `origin` y `upstream` ![captura_01](capturas/captura_01.png)
+
+- Captura 2: GitHub con la rama `dev` visible en el desplegable de ramas ![captura_02](capturas/captura_02.png)                       |
+
+---
+
+### Tarea 2 — Feature branch A: añadir la Opción 5
+> **Diario:** Explica por qué la rama parte de `dev` y no de `main`. Adjunta la captura 3.
+
+Estoy usando la rama "dev" para desarrollo, en esta rama es donde se integran y prueban los cambios y nuevas funcionalidades. Cuando las nuevas funciones estén terminadas y probadas se integran a la rama principal "main".
+
+Para subir al repositorio los cambios locales voy por pasos:
+Tengo que preparar los archivos para el commit. Se usa el comando: 
+“git add src/app.tsx”
+
+Creo un commit, es decir, una versión guardada de los cambios realizados.
+git commit -m "feat: añadir Opción 5 y actualizar descripción de Opción 3"
+
+Subo mi rama feature/opcion-5 al repositorio remoto llamado origin.
+El -u deja esa rama conectada al remoto para que después pueda usar git push o git pull sin escribir todo el comando.
+git push -u origin feature/opcion-5
+
+- Captura 3: La app en el navegador con la Opción 5 recién añadida ![captura_03](capturas/captura_03.png)
+---
+
+### Tarea 3 — Feature branch B: añadir la Opción 6 (aquí está el conflicto)
+> **Diario:** Explica qué es un conflicto en Git y por qué se va a producir aquí.
+
+Un conflicto en Git aparece cuando dos ramas han cambiado la misma parte del mismo archivo de forma distinta, y Git no sabe automáticamente cuál de las dos versiones debe dejar. En el ejemplo:
+- En feature/opcion-5 la Opción 3 cambia description a "Flujo de trabajo".
+- En feature/opcion-6 la Opción 3 cambia ese mismo campo a "Flujo profesional".
+- Ambas ramas salen del mismo punto en dev, así que parten del mismo valor original, pero después lo modifican de manera distinta.
+
+Creo la rama feature/opcion-6. Para eso estoy en dev, y con el comando "git switch -c feature/opcion-6" creo la rama y me muevo a ella. Ahora trabajo en esta rama.
+Añado la Opción 6 al archivo "src/app.tsx".
+
+---
+
+### Tarea 4 — Pull Request 1: Feature A a `dev`
+> **Diario:** Explica qué revisaste en la pestaña Files changed y por qué es útil hacerlo antes de mergear. Adjunta la captura 4.
+
+En Files changed en GitHub veo todos los archivos que se han modificado en la rama feature/opcion-5. En este caso he añadido una nueva tarjeta con la Opción 6 y he cambiado la descripción de la Opción 3. Se ve en rojo lo que se ha eliminado y en verde lo que se ha añadido.
+Es útil revisarlo antes de mergear para asegurarme de que los cambios son los correctos y que no he introducido ningún error.
+En este caso veo también que estoy trabajando mal con los archivos DIARIO.md y las capturas de pantalla de la tarea. Estos archivos debería haberlos dejado fuera del repositorio de Git y meterlos al final para hacer la entrega.
+
+- Captura 4: El PR de Feature A en GitHub con la pestaña **Files changed** abierta ![captura_04](capturas/captura_04.png)
+
+---
+
+### Tarea 5 — Pull Request 2: Feature B a `dev`, conflicto
+> **Diario:** Explica qué significan los marcadores `<<<<<<<`, `=======` y `>>>>>>>` y qué criterio usaste para decidir qué versión conservar. Adjunta las capturas 5, 6 y 7.
+Esos marcadores significan:
+<<<<<<< HEAD: Indica el inicio del conflicto.
+=======: Separa las dos versiones.
+>>>>>>> feature/opcion-6: Indica el final del conflicto.
+
+- Captura 5: El PR de Feature B en GitHub mostrando el banner rojo de conflicto ![captura_05](capturas/captura_05.png)
+
+- Captura 6: Los marcadores de conflicto (`<<<<<<<`, `=======`, `>>>>>>>`) en VS Code  ![captura_06](capturas/captura_06.png)
+
+- Captura 7: La app en el navegador con todas las opciones visibles tras resolver el conflicto  ![captura_07](capturas/captura_07.png)
+---
+
+### Tarea 6 — Limpieza y cierre del diario
+> **Diario:** Adjunta la captura 8 (`git log --oneline`). Cierra el diario con un párrafo libre: qué te ha resultado más difícil y qué tiene más sentido ahora que antes de la clase.
+
+- Captura 8: Terminal con `git log --oneline` en `main` mostrando todos los commits  ![captura_08](capturas/captura_08.png)
+
+En general la clase me ha parecido bastante interesante. He intentado hacer todos los pasos para practicar, pero he tenido algún problema con los archivos de DIARIO y las capturas de pantalla hasta que me he dado cuenta que era mejor dejar esos archivos fuera del repositorio hasta el final. He tenido que ir hacia atrás varias veces para corregir los errores. Por lo demás, todo bien después de varias horas de práctica.
+
+---
+
+## Tareas opcionales
+---
+### Opcional 1 — Feature flag
+> **Diario:** Explica por qué `.env` no está en Git y para qué sirve `.env.example`.
+
+.env no suele subirse a Git porque puede contener datos sensibles y configuración privada del entorno, como claves, contraseñas o valores distintos para cada equipo o despliegue. Sirve para que cada persona tenga su propia configuración local sin exponerla en el repositorio.
+
+.env.example sirve como plantilla: muestra qué variables necesita el proyecto, pero sin poner los valores reales. Así, cuando alguien clona el repo, sabe qué debe copiar en su propio .env para que la app funcione.
+
+- Captura Opcional 1: Terminal con `git remote -v` mostrando `origin` y `upstream` ![captura_opcional_01](capturas/captura_opcional_01.png)
+
+---
+
+### Opcional 2 — PR final: `dev` a `main`
+> **Diario:** Explica por qué se hace el release desde `dev` y no directamente desde una feature branch.
+Se hace por seguridad, para asegurar que todos los cambios se han probado y funcionan correctamente antes de pasar a la rama principal.
+---
+
+
+
+
 
 ### Capturas obligatorias
 
@@ -125,12 +231,8 @@ Un conflicto en Git aparece cuando dos ramas han cambiado la misma parte del mis
 - En feature/opcion-6 la Opción 3 cambia ese mismo campo a "Flujo profesional".
 - Ambas ramas salen del mismo punto en dev, así que parten del mismo valor original, pero después lo modifican de manera distinta.
 
-- Captura 4: Terminal con `git remote -v` mostrando `origin` y `upstream` ![captura_04](capturas/captura_04.png)
-
-- Captura 5: Terminal con `git remote -v` mostrando `origin` y `upstream` ![captura_05](capturas/captura_05.png)
-
-- Captura 6: Terminal con `git remote -v` mostrando `origin` y `upstream` ![captura_06](capturas/captura_06.png)
-
+Creo la rama feature/opcion-6. Para eso estoy en dev, y con el comando "git switch -c feature/opcion-6" creo la rama y me muevo a ella. Ahora trabajo en esta rama.
+Añado la Opción 6 al archivo "src/app.tsx".
 
 ---
 
@@ -144,7 +246,11 @@ Un conflicto en Git aparece cuando dos ramas han cambiado la misma parte del mis
 
 > **Diario:** Explica qué revisaste en la pestaña Files changed y por qué es útil hacerlo antes de mergear. Adjunta la captura 4.
 
+En Files changed en GitHub veo todos los archivos que se han modificado en la rama feature/opcion-5. En este caso he añadido una nueva tarjeta con la Opción 6 y he cambiado la descripción de la Opción 3. Se ve en rojo lo que se ha eliminado y en verde lo que se ha añadido.
+Es útil revisarlo antes de mergear para asegurarme de que los cambios son los correctos y que no he introducido ningún error.
+En este caso veo también que estoy trabajando mal con los archivos DIARIO.md y las capturas de pantalla de la tarea. Estos archivos debería haberlos dejado fuera del repositorio de Git y meterlos al final para hacer la entrega.
 
+- Captura 4: El PR de Feature A en GitHub con la pestaña **Files changed** abierta ![captura_04](capturas/captura_04.png)
 
 ---
 
@@ -166,7 +272,16 @@ Un conflicto en Git aparece cuando dos ramas han cambiado la misma parte del mis
 5. Actualiza tu `dev` local.
 
 > **Diario:** Explica qué significan los marcadores `<<<<<<<`, `=======` y `>>>>>>>` y qué criterio usaste para decidir qué versión conservar. Adjunta las capturas 5, 6 y 7.
+Esos marcadores significan:
+<<<<<<< HEAD: Indica el inicio del conflicto.
+=======: Separa las dos versiones.
+>>>>>>> feature/opcion-6: Indica el final del conflicto.
 
+- Captura 5: El PR de Feature B en GitHub mostrando el banner rojo de conflicto ![captura_05](capturas/captura_05.png)
+
+- Captura 6: Los marcadores de conflicto (`<<<<<<<`, `=======`, `>>>>>>>`) en VS Code  ![captura_06](capturas/captura_06.png)
+
+- Captura 7: La app en el navegador con todas las opciones visibles tras resolver el conflicto  ![captura_07](capturas/captura_07.png)
 ---
 
 ### Tarea 6 — Limpieza y cierre del diario
@@ -183,6 +298,10 @@ git branch -d feature/opcion-6
 4. Asegúrate de que tu `DIARIO.md` está completo con todas las capturas y haz commit y push.
 
 > **Diario:** Adjunta la captura 8 (`git log --oneline`). Cierra el diario con un párrafo libre: qué te ha resultado más difícil y qué tiene más sentido ahora que antes de la clase.
+
+- Captura 8: Terminal con `git log --oneline` en `main` mostrando todos los commits  ![captura_08](capturas/captura_08.png)
+
+En general la clase me ha parecido bastante interesante. He intentado hacer todos los pasos para practicar, pero he tenido algún problema con los archivos de DIARIO y las capturas de pantalla hasta que me he dado cuenta que era mejor dejar esos archivos fuera del repositorio hasta el final. He tenido que ir hacia atrás varias veces para corregir los errores. Por lo demás, todo bien después de varias horas de práctica.
 
 ---
 
